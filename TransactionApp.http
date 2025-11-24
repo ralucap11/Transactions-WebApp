@@ -1,0 +1,16 @@
+@TransactionApp_HostAddress = http://localhost:5055
+
+POST {{TransactionApp_HostAddress}}/api/UserTransaction
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "first",
+  "transactionValue": true,
+  "date" : "12-02-2022"
+}
+
+
+###
+GET {{TransactionApp_HostAddress}}/api/UserTransaction
+Accept: application/json

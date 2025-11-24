@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "DHFMBD0YlXcZGC8sVy8HLH8AfZ4nncIQd+zp21Yeagw=",
+  "Source": "TransactionApp",
+  "BasePath": "_content/TransactionApp",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
