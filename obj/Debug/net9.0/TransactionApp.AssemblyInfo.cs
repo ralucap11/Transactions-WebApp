@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TransactionApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9785cbd48767a935d16be97e1a0da52dba8cd839")]
 [assembly: System.Reflection.AssemblyProductAttribute("TransactionApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TransactionApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
