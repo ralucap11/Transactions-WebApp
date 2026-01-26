@@ -5,7 +5,7 @@ import './App.css'
 interface UserTransaction {
   id: number;
   name: string;
-  transactionValue: boolean;
+  transactionValue: number;    //before boolean -> first change 
   date: Date;
 }
 
@@ -16,9 +16,9 @@ function App()
   const [tasks, setTasks] = useState<UserTransaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [newName, setNewName] = useState("");
-  const [newValue, setNewValue] = useState(0);
+  const [newValue, setNewValue] = useState<number | string>("");   
   const [newDate, setNewDate] = useState("");
-
+  const [expandedId, setExpandedId] = useState<number | null>(null);  //second change 
   
     const fetchTasks = async () => {
       try {
@@ -91,7 +91,7 @@ function App()
          </div>
        
          <div style={{marginBottom: '20px'}}>
-        <button type="submit" style={{marginRight: '10px'}}>
+        <button type="submit" style={{marginRight: '10px', backgroundColor: 'blue'}}>
             Add transaction
         </button>
       </div>
@@ -100,10 +100,39 @@ function App()
      </div>
       
       <ul>
-        {tasks.length === 0 && <li></li>}
+        {tasks.length === 0 && <li>No transactions found.</li>}
         {tasks.map((task) => (
-          <li key={task.id}>
-            {task.name} - {task.transactionValue ? "true" : "false"}
+          <li key={task.id} style={{listStyle: 'none', marginBottom: '15px'}}>
+            <span 
+            onClick={() => setExpandedId(expandedId === task.id ? null : task.id)}
+             style={{cursor : 'pointer', fontWeight: 'bold', textDecoration : 'underline'}}
+             >
+              {task.name} 
+             </span>
+             {expandedId === task.id && (
+            <div style={{
+              marginTop: '5px',
+              padding: '10px',
+              backgroundColor: '#222',
+              borderRadius: '5px',
+              border: '1px solid #444'
+            }}>
+             <p style={{ margin: '5px 0', color: 'white' }}>
+      Value: 
+      <span style={{ 
+        marginLeft: '5px',
+        fontWeight: 'bold',
+        color: task.transactionValue >= 0 ? 'green' : 'red' 
+      }}>
+        {task.transactionValue >= 0 ? '+' : ''}{task.transactionValue}
+      </span>
+    </p>
+    
+    <p style={{ margin: '5px 0' }}>
+      Date: {new Date(task.date).toLocaleDateString()}
+    </p> 
+  </div>
+)}  
           </li>
         ))}
       </ul>
