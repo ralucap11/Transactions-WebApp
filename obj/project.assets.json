@@ -2880,11 +2880,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/raluca/RiderProjects/TransactionApp/TransactionApp/TransactionApp.csproj",
+      "projectUniqueName": "/home/raluca/transactionapp/TransactionApp.csproj",
       "projectName": "TransactionApp",
-      "projectPath": "/home/raluca/RiderProjects/TransactionApp/TransactionApp/TransactionApp.csproj",
+      "projectPath": "/home/raluca/transactionapp/TransactionApp.csproj",
       "packagesPath": "/home/raluca/.nuget/packages/",
-      "outputPath": "/home/raluca/RiderProjects/TransactionApp/TransactionApp/obj/",
+      "outputPath": "/home/raluca/transactionapp/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/raluca/.nuget/NuGet/NuGet.Config"
@@ -2958,7 +2958,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/9.0.111/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/9.0.113/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
