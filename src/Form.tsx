@@ -13,6 +13,7 @@ interface FormProps {
 const Form: React.FC<FormProps> = ({ 
   newName, setNewName, newDate, setNewDate, newValue, setNewValue, onSubmit 
 }) => {
+        const today = new Date().toISOString().split('T')[0];
   return (
     <div className="form-container" style={{ marginBottom: "20px", border: "1px solid", padding: "10px" }}>
       <form onSubmit={onSubmit}>
@@ -20,7 +21,10 @@ const Form: React.FC<FormProps> = ({
           <input type="text" placeholder='Name' value={newName} onChange={(e) => setNewName(e.target.value)} required />
         </div>
         <div style={{ marginBottom: '5px' }}>
-          <input type="date" value={newDate} onChange={(e) => setNewDate(e.target.value)} required />
+          <input type="date"
+           value={newDate} onChange={(e) => setNewDate(e.target.value)} 
+           min={today}
+           required />
         </div>
         <div style={{ marginBottom: '5px' }}>
           <input type="number" value={newValue} onChange={(e) => setNewValue(Number(e.target.value))} />

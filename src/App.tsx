@@ -35,7 +35,7 @@ function App() {
   const handleSubmission = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post(API_URL, {
+     const response =  await axios.post(API_URL, {
         name: newName,
         transactionValue: newValue,
         date: newDate
@@ -43,12 +43,25 @@ function App() {
       setNewName("");
       setNewValue(""); 
       setNewDate("");
-      fetchTasks();
+
+      const newTransaction = response.data;
+      setTasks(prevTasks => [newTransaction, ...prevTasks]);
+      //fetchTasks();
     } catch (error) {
       console.error("error posting data", error);
     }
+    
   };
-
+     
+  const deleteTransaction = async (id: number) => {
+    try{
+         await axios.delete(`${API_URL}/${id}`);
+        setTasks(tasks.filter(task => task.id !== id));
+    } catch (error) {
+        console.error("error deleting transaction", error);
+        alert("failed to delete transaction.");
+    }
+  };
   useEffect(() => {
     fetchTasks();
   }, []);
@@ -74,6 +87,7 @@ function App() {
             task={task} 
             isExpanded={expandedId === task.id}
             onToggle={() => setExpandedId(expandedId === task.id ? null : task.id)}
+            onDelete={() => deleteTransaction(task.id)}
           />
         ))}
       </ul>
