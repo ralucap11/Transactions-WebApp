@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TransactionApp.Data;
 using TransactionApp.Models;
+using System.Linq;
 
 namespace TransactionApp.Controllers;
 
@@ -20,7 +21,10 @@ namespace TransactionApp.Controllers;
         [HttpGet]
         public async Task<ActionResult<List<UserTransaction>>> Get()
         {
-            return await _context.UserTransactions.ToListAsync();
+            return await _context.UserTransactions
+                .OrderByDescending(t => t.date) 
+                .ThenByDescending(t => t.id)
+                .ToListAsync();
         }
 
         [HttpPost]
@@ -40,7 +44,7 @@ namespace TransactionApp.Controllers;
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<UserTransaction>> Delete(int id)
+        public async Task<ActionResult<UserTransaction>> Delete(long id)
         {
             var transaction = await _context.UserTransactions.FindAsync(id);
             if(transaction == null) return NotFound();

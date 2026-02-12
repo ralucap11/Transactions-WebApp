@@ -40,7 +40,6 @@
 /home/raluca/RiderProjects/TransactionApp/TransactionApp/bin/Debug/net9.0/System.Composition.Hosting.dll
 /home/raluca/RiderProjects/TransactionApp/TransactionApp/bin/Debug/net9.0/System.Composition.Runtime.dll
 /home/raluca/RiderProjects/TransactionApp/TransactionApp/bin/Debug/net9.0/System.Composition.TypedParts.dll
-/home/raluca/RiderProjects/TransactionApp/TransactionApp/bin/Debug/net9.0/System.Text.Json.dll
 /home/raluca/RiderProjects/TransactionApp/TransactionApp/bin/Debug/net9.0/cs/Microsoft.CodeAnalysis.resources.dll
 /home/raluca/RiderProjects/TransactionApp/TransactionApp/bin/Debug/net9.0/de/Microsoft.CodeAnalysis.resources.dll
 /home/raluca/RiderProjects/TransactionApp/TransactionApp/bin/Debug/net9.0/es/Microsoft.CodeAnalysis.resources.dll
@@ -129,3 +128,9 @@
 /home/raluca/RiderProjects/TransactionApp/TransactionApp/obj/Debug/net9.0/TransactionApp.pdb
 /home/raluca/RiderProjects/TransactionApp/TransactionApp/obj/Debug/net9.0/TransactionApp.genruntimeconfig.cache
 /home/raluca/RiderProjects/TransactionApp/TransactionApp/obj/Debug/net9.0/ref/TransactionApp.dll
+/home/raluca/RiderProjects/TransactionApp/TransactionApp/bin/Debug/net9.0/package-lock.json
+/home/raluca/RiderProjects/TransactionApp/TransactionApp/bin/Debug/net9.0/package.json
+/home/raluca/RiderProjects/TransactionApp/TransactionApp/bin/Debug/net9.0/tsconfig.app.json
+/home/raluca/RiderProjects/TransactionApp/TransactionApp/bin/Debug/net9.0/tsconfig.json
+/home/raluca/RiderProjects/TransactionApp/TransactionApp/bin/Debug/net9.0/tsconfig.node.json
+/home/raluca/RiderProjects/TransactionApp/TransactionApp/obj/Debug/net9.0/TransactionApp.sourcelink.json
