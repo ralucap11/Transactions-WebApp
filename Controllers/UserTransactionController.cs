@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TransactionApp.Data;
 using TransactionApp.Models;
 using System.Linq;
+using TransactionApp.Repositories;
 
 namespace TransactionApp.Controllers;
 
@@ -11,34 +12,35 @@ namespace TransactionApp.Controllers;
     [ApiController]
     public class UserTransactionController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ITransactionRepository _repository;
 
-        public UserTransactionController(ApplicationDbContext context)
+        public UserTransactionController(ITransactionRepository repository)
         {
-            _context = context; //DbContext is automatically injected
+            _repository = repository;
         }
+        
+        
 
         [HttpGet]
-        public async Task<ActionResult<List<UserTransaction>>> Get()
+        public async Task<ActionResult<List<UserTransaction>>> Get([FromQuery] string? type,
+            [FromQuery] string? dateFilter)
         {
-            return await _context.UserTransactions
-                .OrderByDescending(t => t.date) 
-                .ThenByDescending(t => t.id)
-                .ToListAsync();
+            var transactions = await _repository.GetAllTransactionsAsync(type, dateFilter);
+            return Ok(transactions);
         }
 
         [HttpPost]
         public async Task<ActionResult<UserTransaction>> Post(UserTransaction userTransaction)
         {
-            _context.UserTransactions.Add(userTransaction);
-            await _context.SaveChangesAsync();
+           await  _repository.AddAsync(userTransaction);
+            await _repository.SaveChangesAsync();
             return Ok(userTransaction);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<UserTransaction>> GetAll(int id)
         {
-            var transaction = await _context.UserTransactions.FindAsync(id);
+            var transaction = await _repository.GetByIdAsync(id);
             if(transaction == null) return NotFound();
             return transaction;
         }
@@ -46,10 +48,10 @@ namespace TransactionApp.Controllers;
         [HttpDelete("{id}")]
         public async Task<ActionResult<UserTransaction>> Delete(long id)
         {
-            var transaction = await _context.UserTransactions.FindAsync(id);
+            var transaction = await _repository.GetByIdAsync(id);
             if(transaction == null) return NotFound();
-            _context.UserTransactions.Remove(transaction);
-            await _context.SaveChangesAsync();
+           await  _repository.DeleteAsync(transaction);
+            await _repository.SaveChangesAsync();
             return NoContent();
         }
 
@@ -61,8 +63,8 @@ namespace TransactionApp.Controllers;
                 return BadRequest("id is not correct");
             }
 
-            _context.Entry(userTransaction).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+             await _repository.UpdateAsync(userTransaction);
+            await _repository.SaveChangesAsync();
             return NoContent();
         }
     }
