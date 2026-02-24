@@ -22,15 +22,17 @@ function App() {
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [currentType, setCurrentType] = useState("all");
  const [currentTime, setCurrentTime] = useState("all");
+ const [currentSort, setCurrentSort] = useState("newest");
 
-  const fetchTasks = async (type = currentType, time = currentTime) => {
+  const fetchTasks = async (type = currentType, time = currentTime,sort = currentSort) => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API_URL}?type=${type}&dateFilter=${time}`);     
+      const response = await axios.get(`${API_URL}?type=${type}&dateFilter=${time}&sortOrder=${sort}`);     
       setTasks(response.data);
 
       setCurrentType(type);
     setCurrentTime(time);
+    setCurrentSort(sort);
     } catch (error) {
       console.error("error at taking tasks", error);
     } finally {
@@ -100,6 +102,15 @@ function App() {
   <option value="3months">Last 3 Months</option>
   <option value="6months">Last 6 Months</option>
   <option value="year">Last Year</option>
+</select>
+<select onChange={(e) => fetchTasks(currentType, currentTime, e.target.value)}
+ className='sort-filter'
+ value={currentSort}
+>
+<option value="newest">Newest</option>
+  <option value="priceasc">Ascending</option>
+  <option value="pricedesc">Descending</option>
+
 </select>
 </div>
       <ul>
