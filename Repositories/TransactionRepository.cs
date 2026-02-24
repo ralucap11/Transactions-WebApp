@@ -13,7 +13,7 @@ public class TransactionRepository : ITransactionRepository
         _context = context;
     }
     
-    public async Task<List<UserTransaction>> GetAllTransactionsAsync(string? type, string? dateFilter)    {
+    public async Task<List<UserTransaction>> GetAllTransactionsAsync(string? type, string? dateFilter, string? sortOrder)    {
         IQueryable<UserTransaction> query = _context.UserTransactions;
         if (type == "income")
         {
@@ -23,7 +23,7 @@ public class TransactionRepository : ITransactionRepository
             query = query.Where(t => t.transactionValue < 0);
         }
 
-        if (!string.IsNullOrEmpty(dateFilter))
+        if (!string.IsNullOrEmpty(dateFilter) && dateFilter != "all")
         {
             DateTime cutoff = DateTime.Now;
 
@@ -37,10 +37,20 @@ public class TransactionRepository : ITransactionRepository
             
             query = query.Where(t => t.date >= cutoff);
         }
-        return await query
-            .OrderByDescending(t => t.date)
-            .ThenByDescending(t => t.id)
-            .ToListAsync();
+
+        if (sortOrder == "priceasc")
+        {
+            query = query.OrderBy(t => t.transactionValue);
+        }
+        else if (sortOrder == "pricedesc")
+        {
+            query = query.OrderByDescending(t => t.transactionValue);
+        }
+        else
+        {
+            query  = query.OrderByDescending(t => t.date).ThenByDescending(t => t.id);
+        }
+        return await query.ToListAsync();
     }
 
     public async Task<UserTransaction> GetByIdAsync(long id) =>

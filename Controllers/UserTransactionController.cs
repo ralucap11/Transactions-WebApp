@@ -23,9 +23,10 @@ namespace TransactionApp.Controllers;
 
         [HttpGet]
         public async Task<ActionResult<List<UserTransaction>>> Get([FromQuery] string? type,
-            [FromQuery] string? dateFilter)
+            [FromQuery] string? dateFilter,
+            [FromQuery] string? sortOrder)
         {
-            var transactions = await _repository.GetAllTransactionsAsync(type, dateFilter);
+            var transactions = await _repository.GetAllTransactionsAsync(type, dateFilter, sortOrder);
             return Ok(transactions);
         }
 
