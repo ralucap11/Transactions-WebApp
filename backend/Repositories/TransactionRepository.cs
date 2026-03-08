@@ -64,7 +64,14 @@ public class TransactionRepository : ITransactionRepository
     
     public async Task UpdateAsync(UserTransaction transaction) =>
     _context.UserTransactions.Update(transaction);
-    
+
+    public async Task<List<UserTransaction>> GetByNameAsync(string name)
+    { 
+        return await _context.UserTransactions
+            .Where(t => t.name == name)
+            .ToListAsync();
+    }
+
     public async Task SaveChangesAsync() =>
     await _context.SaveChangesAsync();
     

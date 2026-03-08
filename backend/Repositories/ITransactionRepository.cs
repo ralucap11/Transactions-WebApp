@@ -12,5 +12,6 @@ public interface ITransactionRepository
     Task AddAsync(UserTransaction userTransaction);
     Task UpdateAsync(UserTransaction userTransaction);
     Task DeleteAsync(UserTransaction userTransaction);
+    Task<List<UserTransaction>> GetByNameAsync(string name);
     Task SaveChangesAsync(); 
  }

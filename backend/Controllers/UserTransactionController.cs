@@ -1,8 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using TransactionApp.Data;
 using TransactionApp.Models;
-using System.Linq;
 using TransactionApp.Repositories;
 
 namespace TransactionApp.Controllers;
@@ -68,4 +65,19 @@ namespace TransactionApp.Controllers;
             await _repository.SaveChangesAsync();
             return NoContent();
         }
+          
+        
+        [HttpGet("user/{name}")]
+        public async Task<ActionResult<IEnumerable<UserTransaction>>> GetUserTransactions(string name)
+        {
+            var transactions = await _repository.GetByNameAsync(name);
+
+            if (transactions == null)
+            {
+                return NotFound();
+            }
+            
+            return Ok(transactions);
+        }
+     
     }
