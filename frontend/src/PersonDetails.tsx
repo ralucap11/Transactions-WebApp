@@ -1,18 +1,17 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { BarChart } from '@mui/x-charts/BarChart';
-import { useItemHighlighted } from '@mui/x-charts';
-
+import { API_URL } from './constants';
 
 const PersonDetails = () => {
-    const { name } = useParams<{ name: string}>();
+  const { name } = useParams<{ name: string}>();
   const [data, setData] = useState<any[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<string>("all");
   const [selectedYear, setSelectedYear] = useState<string>("all");
 
 
     useEffect(() => {
-        fetch(`http://localhost:5055/api/UserTransaction/user/${name}`)
+        fetch(`${API_URL}/user/${name}`)
         .then(res => res.json())
         .then( data => setData(data))
         .catch(err => console.error("error fetching user data", err))
@@ -27,7 +26,6 @@ const PersonDetails = () => {
         
         const monthMatch = selectedMonth === "all" || itemMonth === selectedMonth
         const yearMatch = selectedYear === "all" || itemYear === selectedYear;
-
 
         return  monthMatch && yearMatch;
 
@@ -107,8 +105,8 @@ return (
                         tickLabelStyle: { fill: 'white' }
                     }]}
                     series={[
-                        { data: [totals.income], label: 'Income', color: '#4caf50' }, // Green for income
-                        { data: [totals.expense], label: 'Expenses', color: '#f44336' } // Red for expenses
+                        { data: [totals.income], label: 'Income', color: '#4caf50' }, 
+                        { data: [totals.expense], label: 'Expenses', color: '#f44336' }
                     ]}
                     height={300}
                 />

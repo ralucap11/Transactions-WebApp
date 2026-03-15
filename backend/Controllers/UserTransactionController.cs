@@ -16,8 +16,6 @@ namespace TransactionApp.Controllers;
             _repository = repository;
         }
         
-        
-
         [HttpGet]
         public async Task<ActionResult<List<UserTransaction>>> Get([FromQuery] string? type,
             [FromQuery] string? dateFilter,
@@ -30,7 +28,7 @@ namespace TransactionApp.Controllers;
         [HttpPost]
         public async Task<ActionResult<UserTransaction>> Post(UserTransaction userTransaction)
         {
-           await  _repository.AddAsync(userTransaction);
+            await  _repository.AddAsync(userTransaction);
             await _repository.SaveChangesAsync();
             return Ok(userTransaction);
         }
@@ -48,9 +46,9 @@ namespace TransactionApp.Controllers;
         {
             var transaction = await _repository.GetByIdAsync(id);
             if(transaction == null) return NotFound();
-           await  _repository.DeleteAsync(transaction);
+            await  _repository.DeleteAsync(transaction);
             await _repository.SaveChangesAsync();
-            return NoContent();
+            return Ok();
         }
 
         [HttpPut("{id}")]
@@ -61,11 +59,10 @@ namespace TransactionApp.Controllers;
                 return BadRequest("id is not correct");
             }
 
-             await _repository.UpdateAsync(userTransaction);
+            await _repository.UpdateAsync(userTransaction);
             await _repository.SaveChangesAsync();
             return NoContent();
         }
-          
         
         [HttpGet("user/{name}")]
         public async Task<ActionResult<IEnumerable<UserTransaction>>> GetUserTransactions(string name)
@@ -79,5 +76,4 @@ namespace TransactionApp.Controllers;
             
             return Ok(transactions);
         }
-     
     }

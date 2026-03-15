@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import axios from 'axios';
-import Form from './Form';
-import Transaction from './Transaction';
 import PersonDetails from './PersonDetails';
 import './App.css';
+import TransactionList from './TransactionList';
+import { API_URL } from './constants';
 
 export interface UserTransaction {
   id: number;
@@ -13,60 +13,6 @@ export interface UserTransaction {
   date: Date;
 }
 
-const API_URL = "http://localhost:5055/api/UserTransaction";
-
-// --- NEW COMPONENT FOR THE MAIN PAGE ---
-const TransactionList = ({ 
-  tasks, fetchTasks, loading, 
-  newName, setNewName, newDate, setNewDate, newValue, setNewValue, 
-  handleSubmission, expandedId, setExpandedId, deleteTransaction,
-  currentType, currentTime, currentSort 
-}: any) => {
-  if (loading) return <div>The data from API is loading...</div>;
-
-  return (
-    <div className='App'>
-      <h1>Transactions Form</h1>
-      <Form 
-        newName={newName} setNewName={setNewName}
-        newDate={newDate} setNewDate={setNewDate}
-        newValue={newValue} setNewValue={setNewValue}
-        onSubmit={handleSubmission}
-      />
-      <div style={{ marginBottom: "20px", display: "flex", gap: "10px" }}>
-        <button onClick={() => fetchTasks("all")} className="filter-btn btn-all">All</button>
-        <button onClick={() => fetchTasks("income", currentTime)} className="filter-btn btn-income">Income</button>
-        <button onClick={() => fetchTasks("expense")} className="filter-btn btn-expense">Expenses</button>
-        <select onChange={(e) => fetchTasks(currentType, e.target.value)} className="date-filter">
-          <option value="all">All Time</option>
-          <option value="month">Last Month</option>
-          <option value="3months">Last 3 Months</option>
-          <option value="6months">Last 6 Months</option>
-          <option value="year">Last Year</option>
-        </select>
-        <select onChange={(e) => fetchTasks(currentType, currentTime, e.target.value)} className='sort-filter' value={currentSort}>
-          <option value="newest">Newest</option>
-          <option value="priceasc">Ascending</option>
-          <option value="pricedesc">Descending</option>
-        </select>
-      </div>
-      <ul>
-        {tasks.length === 0 && <li>No transactions found.</li>}
-        {tasks.map((task: any) => (
-          <Transaction 
-            key={task.id} 
-            task={task} 
-            isExpanded={expandedId === task.id}
-            onToggle={() => setExpandedId(expandedId === task.id ? null : task.id)}
-            onDelete={() => deleteTransaction(task.id)}
-          />
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-// --- MAIN APP COMPONENT ---
 function App() {
   const [tasks, setTasks] = useState<UserTransaction[]>([]);
   const [loading, setLoading] = useState(true);
@@ -81,11 +27,11 @@ function App() {
   const fetchTasks = async (type = currentType, time = currentTime, sort = currentSort) => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API_URL}?type=${type}&dateFilter=${time}&sortOrder=${sort}`);     
-      setTasks(response.data);
       setCurrentType(type);
       setCurrentTime(time);
       setCurrentSort(sort);
+      const response = await axios.get(`${API_URL}?type=${type}&dateFilter=${time}&sortOrder=${sort}`);     
+      setTasks(response.data);
     } catch (error) {
       console.error("error at taking tasks", error);
     } finally {
@@ -133,7 +79,6 @@ function App() {
           currentType={currentType} currentTime={currentTime} currentSort={currentSort}
         />
       } />
-      {/* Ensure the path here matches your Link in Transaction.tsx */}
       <Route path="/user/:name" element={<PersonDetails />} />
     </Routes>
   );

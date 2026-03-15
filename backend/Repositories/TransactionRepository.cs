@@ -26,7 +26,7 @@ public class TransactionRepository : ITransactionRepository
         if (!string.IsNullOrEmpty(dateFilter) && dateFilter != "all")
         {
             DateTime cutoff = DateTime.Now;
-
+            
             switch (dateFilter)
             {
                 case "month": cutoff  = DateTime.Now.AddMonths(-1); break;
@@ -37,19 +37,20 @@ public class TransactionRepository : ITransactionRepository
             
             query = query.Where(t => t.date >= cutoff);
         }
-
-        if (sortOrder == "priceasc")
+       
+        switch(sortOrder)
         {
-            query = query.OrderBy(t => t.transactionValue);
+            case "priceAsc":
+                query = query.OrderBy(t => t.transactionValue);
+                break;
+            case "priceDesc":
+                query = query.OrderByDescending(t => t.transactionValue);
+                break;
+            case "newest":
+                query  = query.OrderByDescending(t => t.date).ThenByDescending(t => t.id);
+                break;
         }
-        else if (sortOrder == "pricedesc")
-        {
-            query = query.OrderByDescending(t => t.transactionValue);
-        }
-        else
-        {
-            query  = query.OrderByDescending(t => t.date).ThenByDescending(t => t.id);
-        }
+        
         return await query.ToListAsync();
     }
 
@@ -74,7 +75,4 @@ public class TransactionRepository : ITransactionRepository
 
     public async Task SaveChangesAsync() =>
     await _context.SaveChangesAsync();
-    
-    
-    
 }
