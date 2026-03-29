@@ -54,7 +54,7 @@ public class TransactionRepository : ITransactionRepository
         return await query.ToListAsync();
     }
 
-    public async Task<UserTransaction> GetByIdAsync(long id) =>
+    public async Task<UserTransaction?> GetByIdAsync(long id) =>
     await _context.UserTransactions.FindAsync(id);
     
     public async Task AddAsync(UserTransaction transaction) =>
@@ -64,7 +64,7 @@ public class TransactionRepository : ITransactionRepository
         _context.UserTransactions.Remove(transaction);
     
     public async Task UpdateAsync(UserTransaction transaction) =>
-    _context.UserTransactions.Update(transaction);
+       _context.UserTransactions.Update(transaction);
 
     public async Task<List<UserTransaction>> GetByNameAsync(string name)
     { 

@@ -5,6 +5,9 @@ import PersonDetails from './PersonDetails';
 import './App.css';
 import TransactionList from './TransactionList';
 import { API_URL } from './constants';
+import Login from './Login';
+
+
 
 export interface UserTransaction {
   id: number;
@@ -12,6 +15,27 @@ export interface UserTransaction {
   transactionValue: number;
   date: Date;
 }
+ interface User{
+    email: string;
+    role: 'admin' | 'user';
+    token: string;  
+  }
+
+ axios.interceptors.request.use(
+  (config) => {
+    const savedUser = localStorage.getItem('app_user');
+    if (savedUser) {
+      const user = JSON.parse(savedUser);
+      if (user.token) {
+        config.headers.Authorization = `Bearer ${user.token}`;
+      }
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 function App() {
   const [tasks, setTasks] = useState<UserTransaction[]>([]);
@@ -23,7 +47,13 @@ function App() {
   const [currentType, setCurrentType] = useState("all");
   const [currentTime, setCurrentTime] = useState("all");
   const [currentSort, setCurrentSort] = useState("newest");
+  const [user, setUser] = useState<User | null>(() => {
+    const savedUser = localStorage.getItem('app_user');
+    return savedUser ? JSON.parse(savedUser) : null; 
 
+  });
+
+ 
   const fetchTasks = async (type = currentType, time = currentTime, sort = currentSort) => {
     try {
       setLoading(true);
@@ -63,7 +93,25 @@ function App() {
     }
   };
 
-  useEffect(() => { fetchTasks(); }, []);
+  useEffect(() => {
+    if(user)
+    {
+      localStorage.setItem('app_user', JSON.stringify(user));
+      fetchTasks();
+    }else {
+      localStorage.removeItem('app_user');
+      setTasks([]);
+    }
+  
+     }, [user]);   
+
+    if (!user) {
+    return (
+      <Routes>
+        <Route path="*" element={<Login setUser={setUser} />} />
+      </Routes>
+    );
+  }
 
   return (
     <Routes>
@@ -77,6 +125,8 @@ function App() {
           expandedId={expandedId} setExpandedId={setExpandedId}
           deleteTransaction={deleteTransaction}
           currentType={currentType} currentTime={currentTime} currentSort={currentSort}
+
+          userRole = {user?.role}
         />
       } />
       <Route path="/user/:name" element={<PersonDetails />} />

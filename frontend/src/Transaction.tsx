@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-const Transaction = ({ task, isExpanded, onToggle, onDelete }: any) => {
+const Transaction = ({ task, isExpanded, onToggle, onDelete, userRole}: any) => {
   return (
     <li style={{ listStyle: 'none', marginBottom: '15px' }}>
       <Link 
@@ -40,6 +40,7 @@ const Transaction = ({ task, isExpanded, onToggle, onDelete }: any) => {
           <p style={{ margin: '5px 0' }}>
             Date: {new Date(task.date).toLocaleDateString()}
           </p> 
+          {userRole === 'admin' && (
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -57,6 +58,7 @@ const Transaction = ({ task, isExpanded, onToggle, onDelete }: any) => {
           >
             Delete
           </button>
+          )}
         </div>
       )}  
     </li>

@@ -5,19 +5,25 @@ const TransactionList = ({
   tasks, fetchTasks, loading, 
   newName, setNewName, newDate, setNewDate, newValue, setNewValue, 
   handleSubmission, expandedId, setExpandedId, deleteTransaction,
-  currentType, currentTime, currentSort 
+  currentType, currentTime, currentSort,
+  userRole //pas 4
 }: any) => {
   if (loading) return <div>The data from API is loading...</div>;
 
   return (
     <div className='App'>
       <h1>Transactions Form</h1>
+       {userRole === 'admin' ? (
+        
       <Form 
         newName={newName} setNewName={setNewName}
         newDate={newDate} setNewDate={setNewDate}
         newValue={newValue} setNewValue={setNewValue}
         onSubmit={handleSubmission}
       />
+       ) : (
+        <p>Log in as Admin to add new Transactions</p>
+       )}
       <div style={{ marginBottom: "20px", display: "flex", gap: "10px" }}>
         <button onClick={() => fetchTasks("all", currentTime, currentSort)} className="filter-btn btn-all">All</button>
         <button onClick={() => fetchTasks("income", currentTime, currentSort)} className="filter-btn btn-income">Income</button>
@@ -55,7 +61,8 @@ const TransactionList = ({
             task={task} 
             isExpanded={expandedId === task.id}
             onToggle={() => setExpandedId(expandedId === task.id ? null : task.id)}
-            onDelete={() => deleteTransaction(task.id)}
+            userRole = {userRole}
+            onDelete={userRole === 'Admin' ? () => deleteTransaction(task.id): null}
           />
         ))}
       </ul>

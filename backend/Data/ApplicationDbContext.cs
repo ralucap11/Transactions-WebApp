@@ -11,4 +11,5 @@ public class ApplicationDbContext : DbContext
         
     }
     public DbSet<UserTransaction> UserTransactions { get; set; }
+    public DbSet<User> User { get; set; }
 }
