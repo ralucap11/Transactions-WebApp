@@ -43,6 +43,7 @@ function App() {
   const [newName, setNewName] = useState("");
   const [newValue, setNewValue] = useState<number | string>("");
   const [newDate, setNewDate] = useState("");
+  const [transactionUser, setTransactionUser] = useState("");
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [currentType, setCurrentType] = useState("all");
   const [currentTime, setCurrentTime] = useState("all");
@@ -75,7 +76,7 @@ function App() {
       const response = await axios.post(API_URL, {
         name: newName,
         transactionValue: newValue,
-        date: newDate
+        date: newDate,
       });
       setNewName(""); setNewValue(""); setNewDate("");
       setTasks(prevTasks => [response.data, ...prevTasks]);
