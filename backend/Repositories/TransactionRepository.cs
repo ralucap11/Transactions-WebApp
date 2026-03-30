@@ -54,7 +54,7 @@ public class TransactionRepository : ITransactionRepository
         return await query.ToListAsync();
     }
 
-    public async Task<UserTransaction?> GetByIdAsync(long id) =>
+    public async Task<UserTransaction?> GetByIdAsync(Guid id) =>
     await _context.UserTransactions.FindAsync(id);
     
     public async Task AddAsync(UserTransaction transaction) =>

@@ -35,7 +35,7 @@ namespace TransactionApp.Controllers;
         {
             var transaction = new UserTransaction
             {
-                id = userTransaction.id.Value,
+                id = Guid.NewGuid(),
                 userId = userTransaction.userId,
                 name = userTransaction.name,
                 date = userTransaction.date,
@@ -44,13 +44,15 @@ namespace TransactionApp.Controllers;
             
             await  _repository.AddAsync(transaction);
             await _repository.SaveChangesAsync();
+            
+            userTransaction.id = transaction.id;
             return Ok(userTransaction);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TransactionDTO>> GetAll(int id)
+        public async Task<ActionResult<TransactionDTO>> GetAll(string id)
         {
-            var transaction = await _repository.GetByIdAsync(id);
+            var transaction = await _repository.GetByIdAsync(Guid.Parse(id));
             if(transaction == null) return NotFound();
             
             return new TransactionDTO
@@ -65,9 +67,9 @@ namespace TransactionApp.Controllers;
 
         [HttpDelete("{id}")]
         [Authorize (Roles = UserRoles.Admin)] 
-        public async Task<ActionResult<TransactionDTO>> Delete(long id)
+        public async Task<ActionResult<TransactionDTO>> Delete(string id)
         {
-            var transaction = await _repository.GetByIdAsync(id);
+            var transaction = await _repository.GetByIdAsync(Guid.Parse(id));
             if(transaction == null) return NotFound();
             await  _repository.DeleteAsync(transaction);
             await _repository.SaveChangesAsync();
